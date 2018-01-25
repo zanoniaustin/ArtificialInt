@@ -2,6 +2,7 @@ from Const import Const
 from Move import Move
 from State import State
 from RandomAgent import RandomAgent
+import os
 
 class RandomGame:
     def __init__(self):
@@ -21,6 +22,16 @@ class RandomGame:
         while self._state.getState() == Const.STATE_TURN_O or \
               self._state.getState() == Const.STATE_TURN_X:
             self.turn()
+            board = self._state.getBoard()
+            print(board[0][0], "|", board[0][1], "|", board[0][2])
+            print("---------")
+            print(board[1][0], "|", board[1][1], "|", board[1][2])
+            print("---------")
+            print(board[2][0], "|", board[2][1], "|", board[2][2])
+            print()
+
+
+
         print("game over")
         if self._state.getState() == Const.STATE_WIN_O:
             print("o won")
@@ -28,8 +39,7 @@ class RandomGame:
             print("x won")
         if self._state.getState() == Const.STATE_DRAW:
             print("draw")
-        
+
 if __name__ == '__main__':
     game = RandomGame()
     game.play()
-
