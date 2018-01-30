@@ -15,8 +15,18 @@ class RandomGame:
             move = self._agentO.move(self._state)
             move.play(self._state)
         elif self._state.getState() == Const.STATE_TURN_X:
-            move = self._agentX.move(self._state)
-            move.play(self._state)
+            victory = False
+            moveList = self._agentX.moveSmart(self._state)
+            for moves in moveList:
+                move = Move(moveList[moves][0],moveList[moves][1],mark)
+                move.play(self._state)
+                if self._state.getState() != STATE_WIN_X:
+                    move.undo(self._state)
+                else:
+                    victory = True
+            if victory == False:
+                spot=random.randint(0,len(moveList)-1)
+                move = Move(moveList[spot][0],moveList[spot][1],mark)
 
     def play(self):
         while self._state.getState() == Const.STATE_TURN_O or \
