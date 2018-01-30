@@ -15,7 +15,7 @@ class State:
         raise ValueError("move invalid in current state")
 
     def _repeats(self,row,col,rowDir,colDir):
-        mark = self._board[row][col]        
+        mark = self._board[row][col]
         count = 0
         while (row >= 0 and row < Const.ROWS and col >= 0) and \
               col < Const.COLS and self._board[row][col]==mark:
@@ -42,7 +42,7 @@ class State:
 
     def _draw(self):
         return self._unplayed == 0
-        
+
     def move(self,row,col,mark):
         self.moveOk(row,col,mark)
         self._board[row][col]=mark
@@ -61,8 +61,8 @@ class State:
                 self._state = Const.STATE_TURN_O
 
     def unmove(self,row,col):
-        State.rowOk(row)
-        State.colOk(col)
+        Const.rowOk(row)
+        Const.colOk(col)
         if self._board[row][col] == Const.MARK_X:
             self._unplayed = self._unplayed + 1
             self._board[row][col] = Const.MARK_NONE
@@ -71,7 +71,7 @@ class State:
             self._unplayed = self._unplayed + 1
             self._board[row][col] = Const.MARK_NONE
             self._state = Const.STATE_TURN_O
-            
+
     def reset(self):
         self._board = [[Const.MARK_NONE for col in range(Const.COLS)] for row in range(Const.ROWS)]
 
@@ -80,10 +80,10 @@ class State:
 
     def getBoard(self):
         return [[self._board[row][col]  for col in range(Const.COLS)] for row in range(Const.ROWS)]
-        
+
     def getState(self):
         return self._state
-    
+
     def __init__(self):
         self.reset()
 

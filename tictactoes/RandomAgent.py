@@ -35,16 +35,16 @@ class RandomAgent:
             raise ValueError("state must be playable")
         board = state.getBoard()
         playable = []
-        victory = False
         for row in range(Const.ROWS):
             for col in range(Const.COLS):
                 if board[row][col] == Const.MARK_NONE:
                     playable.append([row,col])
                     state.move(row, col, mark)
-                    if state.getState() == STATE_WIN_X:
-                        victory == True
+                    if state.getState() == Const.STATE_WIN_X:
+                        state.unmove(row,col)
+                        return Move(row,col,mark)
                     state.unmove(row, col)
         #Spot is just a number how does it keep track of the row and col
-        
+
         spot=random.randint(0,len(playable)-1)
         return Move(playable[spot][0],playable[spot][1],mark)
