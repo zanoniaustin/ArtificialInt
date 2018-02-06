@@ -9,6 +9,7 @@ class Const:
     STATE_WIN_O = 3
     STATE_WIN_X = 4
     STATE_DRAW = 5
+    DEPTH = 2
 
     def rowOk(row):
         if not isinstance(row,int):

@@ -9,7 +9,7 @@ class MinMaxAgent:
             raise ValueError("side must be MARK_X or MARK_O")
         self.side = side
 
-    def value(self,game):
+    def value(self,game,depth):
         ans = None
         state = game.getState()
         if state == Const.STATE_WIN_O:
@@ -34,28 +34,32 @@ class MinMaxAgent:
         myTurn = (iside == iturn)
         myOptions = 0
 
+
         for move in game.getMoves():
             move.play(game)
-            (moveValue,moveOptions)=self.value(game)
-            move.unplay(game)
-            myOptions = myOptions + 1 + moveOptions 
-            if ans == None:
-                ans = moveValue
-            else:
-                if myTurn:
-                   ans = max(ans,moveValue)
+            if depth <= Const.DEPTH:
+                depth = depth + 1
+                print(depth)
+                (moveValue,moveOptions)=self.value(game,depth)
+                move.unplay(game)
+                myOptions = myOptions + 1 + moveOptions
+                if ans == None:
+                    ans = moveValue
                 else:
-                   ans = min(ans,moveValue)
+                    if myTurn:
+                        ans = max(ans,moveValue)
+                    else:
+                        ans = min(ans,moveValue)
 
         return (ans,myOptions)
 
     def move(self,game):
-        (maxValue,maxOptions)=self.value(game)
+        (maxValue,maxOptions)=self.value(game,0)
         playable = []
         maxPlayableOption = 0
         for move in game.getMoves():
             move.play(game)
-            (moveValue,moveOptions)=self.value(game)
+            (moveValue,moveOptions)=self.value(game,0)
             move.unplay(game)
             if moveValue == maxValue:
                 playable.append((move,moveOptions))
@@ -65,6 +69,6 @@ class MinMaxAgent:
         for (move,options) in playable:
             if options == maxPlayableOption:
                 bestPlayable.append(move)
-        
+
         spot=random.randint(0,len(bestPlayable)-1)
         return bestPlayable[spot]
