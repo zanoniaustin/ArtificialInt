@@ -36,10 +36,10 @@ class MinMaxAgent:
 
 
         for move in game.getMoves():
-            move.play(game)
             if depth <= Const.DEPTH:
                 depth = depth + 1
                 print(depth)
+                move.play(game)
                 (moveValue,moveOptions)=self.value(game,depth)
                 move.unplay(game)
                 myOptions = myOptions + 1 + moveOptions
@@ -50,6 +50,8 @@ class MinMaxAgent:
                         ans = max(ans,moveValue)
                     else:
                         ans = min(ans,moveValue)
+            else:
+                return (0,1)
 
         return (ans,myOptions)
 
