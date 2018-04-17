@@ -39,7 +39,7 @@ class Game:
         return moves
 
     def _repeats(self,row,col,rowDir,colDir):
-        mark = self._board[row][col]        
+        mark = self._board[row][col]
         count = 0
         while (row >= 0 and row < Const.ROWS and col >= 0) and \
               col < Const.COLS and self._board[row][col]==mark:
@@ -66,7 +66,7 @@ class Game:
 
     def _draw(self):
         return self._unplayed == 0
-        
+
     def move(self,row,col,mark):
         self.moveOk(row,col,mark)
         self._board[row][col]=mark
@@ -106,13 +106,26 @@ class Game:
 
     def getBoard(self):
         return [[self._board[row][col]  for col in range(Const.COLS)] for row in range(Const.ROWS)]
-        
+
     def getState(self):
         return self._state
-    
+
     def __init__(self):
         self.reset()
 
     def play(self,moves):
         for move in moves.split():
             Move.parse(move).play(self)
+
+    def getIndex(self):
+        i = 0
+        for row in range(Const.ROWS):
+            for col in range(Const.COLS):
+                board = self._board[row][col]
+                x = 0
+                if board == Const.MARK_X:
+                    x = 1
+                elif board == Const.MARK_O:
+                    x = 2
+                i = 3 * i + x
+        return i

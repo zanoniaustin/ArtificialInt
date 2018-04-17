@@ -8,8 +8,9 @@ class MinMaxAgent:
         if side != Const.MARK_O and side != Const.MARK_X:
             raise ValueError("side must be MARK_X or MARK_O")
         self.side = side
+        self._cache = {}
 
-    def value(self,game,depth):
+    def unCachedValue(self,game, depth):
         ans = None
         state = game.getState()
         if state == Const.STATE_WIN_O:
@@ -40,7 +41,7 @@ class MinMaxAgent:
                 depth = depth + 1
                 print(depth)
                 move.play(game)
-                (moveValue,moveOptions)=self.value(game,depth)
+                (moveValue,moveOptions)=self.value(game, depth)
                 move.unplay(game)
                 myOptions = myOptions + 1 + moveOptions
                 if ans == None:
@@ -54,6 +55,13 @@ class MinMaxAgent:
                 return (0,1)
 
         return (ans,myOptions)
+
+    def value(self, game,depth):
+        index = game.getIndex()
+        if index in self._cache: return self._cache[index]
+        ans = self.unCachedValue(game,0)
+        self._cache[index] = ans
+        return ans
 
     def move(self,game):
         (maxValue,maxOptions)=self.value(game,0)
