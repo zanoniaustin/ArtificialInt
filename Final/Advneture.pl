@@ -70,13 +70,15 @@ path(table, e, basement).
 instructions :-
   nl, write('Please enter command to decide what you want to do.'), nl,
   write('Available commands are(make sure to put in periods):'), nl,
-  write('north. south. west. east. up. down.  -- to go in that direction.'), nl,
-  write('take(item).                          -- to take available item.'), nl,
-  write('drop(item).                          -- to drop available items'), nl,
-  write('observe.                             -- look around at settings.'), nl,
-  write('talk.                                -- talk to people around you.'), nl,
-  write('instructions.                        -- show this message again.'), nl,
-  write('halt.                                -- to exit game.'), nl, nl.
+  write('north. south. west. east. up. down.  -- to go in that direction'), nl,  /* done */
+  write('take(item).                          -- to take available item'), nl,  /* not done bronze key with cage not working properly */
+  write('drop(item).                          -- to drop available items'), nl,  /* done */
+  write('interact.                            -- to do something with object'), nl,
+  write('observe.                             -- look around at settings'), nl,   /* done */
+  write('talk.                                -- talk to people around you'), nl, /* done with functionality just need to add correct dialoge */
+  write('attack.                              -- attack person of intrest'), nl,
+  write('instructions.                        -- show this message again'), nl,  /* done */
+  write('halt.                                -- to exit game'), nl, nl.   /* done */
 
 start :-
   instructions,
@@ -108,6 +110,62 @@ down :- go(d).
 look :-
   i_am_at(Location),
   describe(Location), nl.
+
+observe :-
+  look.
+
+/* setting locations of items to interact with */
+
+at(steel_sword, armory).
+at(key, dresser).
+at(bronze_key, table).
+at(sword, store).
+at(coins, village_center).
+
+/* Picking up and dropping items */
+
+take(X) :-
+  at(X, in_hand),
+  write('Your are already holding that item.'), nl, !.
+
+take(X) :-
+  i_am_at(Location),
+  at(X, Location),
+  retract(at(X, Location)),
+  assert(at(X, in_hand)),
+  write('Item picked up.'), nl, !.
+
+take(_) :-
+  write('You do not see that item.'), nl.
+
+drop(X) :-
+  at(X, in_hand),
+  i_am_at(Location),
+  retract(at(X, in_hand)),
+  assert(at(X, Location)),
+  write('Item has been dropped'), nl, !.
+
+drop(_) :-
+  write('You are not holding that item'), nl.
+
+/* talking with NPCs */
+
+talk :-
+  i_am_at(Location),
+  conversation(Location), nl.
+
+conversation(village_center) :-
+  write('Please you seem like a strong adventurer could you find my son for me? I am'), nl,
+  write('willing to help you out with some money so you can go and defeat the king.'), nl, !.
+
+conversation(cage) :-
+  write('Thank you so much for saving me! Let us go together and kill the king!'), nl, !.
+
+conversation(throne_room) :-
+  write('I am king BAAAAAHHHHHHH'), nl, !.
+
+conversation(_) :-
+  write('There is no one for you to talk to here.'), nl.
 
 /* Descriptions of all locations */
 
