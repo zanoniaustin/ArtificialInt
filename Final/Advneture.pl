@@ -18,7 +18,7 @@ health(unhurt).
 prisoner_health(unhurt).
 scared(no).
 surrendered(no).
-prisoned(no).
+prisoned(yes).
 
 /*  Describing the different connections between locations   */
 
@@ -119,154 +119,107 @@ intimidate :-
 /* isScared function to check to see if the king is scared */
 
 isScared :-     /* you and prisoner have sword */
-  at(steel_sword, in_hand),
-  prisoned(no),
-  at(sword, prisoner),
-  scared(no),
+  at(steel_sword, in_hand), prisoned(no), at(sword, prisoner), scared(no),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have 2 swords and freed prisoner */
-  at(steel_sword, in_hand),
-  at(sword, in_hand),
-  prisoned(no),
-  scared(no),
+  at(steel_sword, in_hand), at(sword, in_hand), prisoned(no), scared(no),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have freed the prisoner and have 1 sword */
-  at(steel_sword, in_hand),
-  prisoned(no),
-  scared(no),
-  king_health(serious),
+  at(steel_sword, in_hand), prisoned(no), scared(no), king_health(serious),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have freed the prisoner and have 1 sword */
-  at(sword, in_hand),
-  prisoned(no),
-  scared(no),
-  king_health(serious),
+  at(sword, in_hand), prisoned(no), scared(no), king_health(serious),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have freed the prisoner and he has a sword */
-  at(sword, prisoner),
-  prisoned(no),
-  scared(no),
-  king_health(serious),
+  at(sword, prisoner), prisoned(no), scared(no), king_health(serious),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have 2 swords and have not free the prisoner */
-  at(sword, in_hand),
-  at(steel_sword, in_hand),
-  prisoned(yes),
-  scared(no),
-  king_health(serious),
+  at(sword, in_hand), at(steel_sword, in_hand), prisoned(yes), scared(no), king_health(serious),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have sword and have not freed the prisoner */
-  at(sword, in_hand),
-  prisoned(yes),
-  scared(no),
-  king_health(serious),
+  at(sword, in_hand), prisoned(yes), scared(no), king_health(serious),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
 
 isScared :-     /* you have steel_sword and have not freed the prisoner */
-  at(steel_sword, in_hand),
-  prisoned(yes),
-  scared(no),
-  king_health(serious),
+  at(steel_sword, in_hand), prisoned(yes), scared(no), king_health(serious),
   retract(scared(no)),
-  assert(scared(yes)).
+  assert(scared(yes)), !.
+
+isScared.
+
 
 /* surrender function is when the king will surrender to you on his own without intimidation needed */
 
 surrender :-     /* you and the prisoner have a sword */
-  at(steel_sword, in_hand),
-  prisoned(no),
-  at(sword, prisoner),
-  scared(yes),
-  surrendered(no),
+  at(steel_sword, in_hand), prisoned(no), at(sword, prisoner), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have 2 swords and have freed the prisoner */
-  at(steel_sword, in_hand),
-  at(sword, in_hand),
-  prisoned(no),
-  scared(yes),
-  surrendered(no),
+  at(steel_sword, in_hand), at(sword, in_hand), prisoned(no), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have a steel_swords and have freed the prisoner */
-  at(steel_sword, in_hand),
-  prisoned(no),
-  scared(yes),
-  surrendered(no),
+  at(steel_sword, in_hand), prisoned(no), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have a sword and have freed the prisoner */
-  at(sword, in_hand),
-  prisoned(no),
-  scared(yes),
-  surrendered(no),
+  at(sword, in_hand), prisoned(no), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have freed the prisoner and he has a sword */
-  at(sword, prisoner),
-  prisoned(no),
-  scared(yes),
-  surrendered(no),
+  at(sword, prisoner), prisoned(no), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have 2 swords and have not freed the prisoner */
-  at(sword, in_hand),
-  at(steel_sword, in_hand),
-  prisoned(yes),
-  scared(yes),
-  surrendered(no),
+  at(sword, in_hand), at(steel_sword, in_hand), prisoned(yes), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have a sword and have not freed the prisoner */
-  at(sword, in_hand),
-  prisoned(yes),
-  scared(yes),
-  surrendered(no),
+  at(sword, in_hand), prisoned(yes), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
 
 surrender :-     /* you have a steel_swords and have not freed the prisoner */
-  at(steel_sword, in_hand),
-  prisoned(yes),
-  scared(yes),
-  surrendered(no),
+  at(steel_sword, in_hand), prisoned(yes), scared(yes), surrendered(no),
   king_health(mortally_hurt),
   retract(surrendered(no)),
   assert(surrendered(yes)),
-  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl.
+  write('The king throws down his sword and surrenders to you. He acknowledges you to have bested him.'), nl, !.
+
+surrender.
 
 
 /* go function is called it will see if the call matches any valid directions to move and change your location if it can */
@@ -301,10 +254,10 @@ observe :-
 
 /* setting locations of items to interact with */
 
-at(steel_sword, in_hand).
+at(steel_sword, armory).
 at(key, dresser).
 at(bronze_key, table).
-at(sword, in_hand) /*:- at(coins, store_owner)*/.
+at(sword, store) :- at(coins, store_owner).
 at(coins, village_center).
 
 /* Picking up and dropping items */
@@ -521,164 +474,182 @@ describe(cage) :-
 
 /* Attack sequence of you have a sword and freed the prisoner and he has a sword */
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  prisoned(no),
-  at(sword, prisoner),
-  king_health(unhurt),
-  retract(king_health(unhurt)),
-  assert(king_health(mortally_hurt)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(no), at(sword, prisoner), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(mortally_hurt)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  prisoned(no),
-  at(sword, prisoner),
-  king_health(mortally_hurt),
-  retract(king_health(mortally_hurt)),
-  assert(king_health(dead)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(no), at(sword, prisoner), king_health(mortally_hurt), health(slightly),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
 /* Attack sequence of having 2 swords and freed prisoner */
 attack :-
-  write('heello'), 
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  at(sword, in_hand),
-  prisoned(no),
-  king_health(unhurt),
-  retract(king_health(unhurt)),
-  assert(king_health(mortally_hurt)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), at(sword, in_hand), prisoned(no), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(mortally_hurt)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  at(sword, in_hand),
-  prisoned(no),
-  king_health(mortally_hurt),
-  retract(king_health(mortally_hurt)),
-  assert(king_health(dead)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), at(sword, in_hand), prisoned(no), king_health(mortally_hurt), health(slightly),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
 /* Attack sequence of having a steel_sword and freed the prisoner */
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  prisoned(no),
-  king_health(unhurt),
-  retract(king_health(unhurt)),
-  assert(king_health(injured)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(no), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(injured)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  prisoned(no),
-  king_health(injured),
-  retract(king_health(injured)),
-  assert(king_health(serious)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(no), king_health(injured),  health(unhurt),
+  retract(king_health(injured)), assert(king_health(serious)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  prisoned(no),
-  king_health(serious),
-  retract(king_health(serious)),
-  assert(king_health(mortally_hurt)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(no), king_health(serious), health(slightly),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(steel_sword, in_hand),
-  prisoned(no),
-  king_health(mortally_hurt),
-  retract(king_health(mortally_hurt)),
-  assert(king_health(dead)),
-  retract(prisoner_health(unhurt)),
-  assert(prisoner_health(dead)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(no), king_health(mortally_hurt), health(injured),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(prisoner_health(unhurt)), assert(prisoner_health(dead)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
 /* Attack sequence of having a sword and freed the prisoner */
 attack :-
-  i_am_at(throne_room),
-  at(sword, in_hand),
-  prisoned(no),
-  king_health(unhurt),
-  retract(king_health(unhurt)),
-  assert(king_health(injured)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, in_hand), prisoned(no), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(injured)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(sword, in_hand),
-  prisoned(no),
-  king_health(injured),
-  retract(king_health(injured)),
-  assert(king_health(serious)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, in_hand), prisoned(no), king_health(injured),  health(unhurt),
+  retract(king_health(injured)), assert(king_health(serious)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(sword, in_hand),
-  prisoned(no),
-  king_health(serious),
-  retract(king_health(serious)),
-  assert(king_health(mortally_hurt)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, in_hand), prisoned(no), king_health(serious), health(slightly),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(sword, in_hand),
-  prisoned(no),
-  king_health(mortally_hurt),
-  retract(king_health(mortally_hurt)),
-  assert(king_health(dead)),
-  retract(prisoner_health(unhurt)),
-  assert(prisoner_health(dead)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, in_hand), prisoned(no), king_health(mortally_hurt), health(injured),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(prisoner_health(unhurt)), assert(prisoner_health(dead)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
 /* Attack sequence of having freed the prisoner and he has a sword */
 attack :-
-  i_am_at(throne_room),
-  at(sword, prisoner),
-  prisoned(no),
-  king_health(unhurt),
-  retract(king_health(unhurt)),
-  assert(king_health(injured)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, prisoner), prisoned(no), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(injured)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(sword, prisoner),
-  prisoned(no),
-  king_health(injured),
-  retract(king_health(injured)),
-  assert(king_health(serious)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, prisoner), prisoned(no), king_health(injured),  health(unhurt),
+  retract(king_health(injured)), assert(king_health(serious)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(sword, prisoner),
-  prisoned(no),
-  king_health(serious),
-  retract(king_health(serious)),
-  assert(king_health(mortally_hurt)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, prisoner), prisoned(no), king_health(serious), health(slightly),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
 attack :-
-  i_am_at(throne_room),
-  at(sword, prisoner),
-  prisoned(no),
-  king_health(mortally_hurt),
-  retract(king_health(mortally_hurt)),
-  assert(king_health(dead)),
-  retract(prisoner_health(unhurt)),
-  assert(prisoner_health(dead)),
-  isScared,
-  surrender, !.
+  i_am_at(throne_room), at(sword, prisoner), prisoned(no), king_health(mortally_hurt), health(injured),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(prisoner_health(unhurt)), assert(prisoner_health(dead)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
+/* Attack sequence of having freed the prisoner and having no weapons */
+attack :-
+  i_am_at(throne_room), prisoned(no), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(injured)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), prisoned(no), king_health(injured), health(slightly),
+  retract(king_health(injured)), assert(king_health(serious)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), prisoned(no), king_health(serious), health(injured),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(prisoner_health(unhurt)), assert(prisoner_health(dead)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), prisoned(no), king_health(mortally_hurt), health(mortally_hurt),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(health(mortally_hurt)), assert(health(dead)),
+  isScared, surrender, !.
+/* Attack sequence when you have not freed the prisoner and have both swords */
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), at(steel_sword, in_hand), prisoned(yes), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(serious)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), at(steel_sword, in_hand), prisoned(yes), king_health(serious), health(slightly),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), at(steel_sword, in_hand), prisoned(yes), king_health(mortally_hurt), health(injured),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
+/* Attack sequence of not having freed the prisoner and having the sword */
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), prisoned(yes), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(injured)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), prisoned(yes), king_health(injured), health(slightly),
+  retract(king_health(injured)), assert(king_health(serious)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), prisoned(yes), king_health(serious), health(injured),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(sword, in_hand), prisoned(yes), king_health(mortally_hurt), health(mortally_hurt),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(health(mortally_hurt)), assert(health(dead)),
+  isScared, surrender, !.
+/* Attack sequence of not having freed the prisoner and having the steel_sword */
+attack :-
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(yes), king_health(unhurt), health(unhurt),
+  retract(king_health(unhurt)), assert(king_health(injured)),
+  retract(health(unhurt)), assert(health(slightly)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(yes), king_health(injured), health(slightly),
+  retract(king_health(injured)), assert(king_health(serious)),
+  retract(health(slightly)), assert(health(injured)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(yes), king_health(serious), health(injured),
+  retract(king_health(serious)), assert(king_health(mortally_hurt)),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), at(steel_sword, in_hand), prisoned(yes), king_health(mortally_hurt), health(mortally_hurt),
+  retract(king_health(mortally_hurt)), assert(king_health(dead)),
+  retract(health(mortally_hurt)), assert(health(dead)),
+  isScared, surrender, !.
+/* Atttack sequence of having not freed the prisoner and having no weapons */
+attack :-
+  i_am_at(throne_room), prisoned(yes), king_health(unhurt), health(unhurt),
+  retract(health(unhurt)), assert(health(injured)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), prisoned(yes), king_health(unhurt), health(injured),
+  retract(health(injured)), assert(health(mortally_hurt)),
+  isScared, surrender, !.
+attack :-
+  i_am_at(throne_room), prisoned(yes), king_health(unhurt), health(mortally_hurt),
+  retract(health(mortally_hurt)), assert(health(dead)),
+  isScared, surrender, !.
 
 attack :-
   write('There is nothing to attack'), nl.
